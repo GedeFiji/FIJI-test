@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>TopUp Store — Demo</title>
+  <style>
+    /* ====== Root & Reset ====== */
+    :root{
+      --bg:#0f1724;
+      --card:#0b1220;
+      --muted:#9aa4b2;
+      --accent:#ffcc33;
+      --accent-2:#ff9f1c;
+      --glass: rgba(255,255,255,0.04);
+      --radius:14px;
+      --gap:16px;
+      --maxw:1100px;
+      --shadow: 0 6px 20px rgba(2,6,23,0.6);
+      --glass-2: rgba(255,255,255,0.03);
+      --success: #2dd4bf;
+      --danger: #ff6b6b;
+      font-family: Inter, ui-sans-serif, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background: linear-gradient(180deg,#061124 0%, #071427 60%), var(--bg);
+      color:#e6eef6;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.45;
+      padding:28px 18px;
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+      gap:24px;
+      font-size:15px;
+    }
+    .container{
+      width:100%;
+      max-width:var(--maxw);
+    }
+
+    /* ===== Header ===== */
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:20px;
+    }
+    .logo{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .logo .mark{
+      width:44px;
+      height:44px;
+      background: linear-gradient(135deg,var(--accent),var(--accent-2));
+      border-radius:10px;
+      display:grid;
+      place-items:center;
+      box-shadow: 0 6px 18px rgba(255,160,38,0.12);
+      font-weight:700;
+      color:#0b1220;
+      font-size:18px;
+    }
+    .logo h1{
+      margin:0;
+      font-size:18px;
+      letter-spacing:0.2px;
+    }
+    nav{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    nav a{
+      color:var(--muted);
+      text-decoration:none;
+      padding:8px 12px;
+      border-radius:10px;
+    }
+    nav a.cta{
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:#081024;
+      font-weight:600;
+      box-shadow:var(--shadow);
+    }
+
+    /* ===== Main layout ===== */
+    .main{
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:24px;
+      align-items:start;
+    }
+
+    /* ===== Left column: hero, promos ===== */
+    .hero{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:var(--radius);
+      padding:22px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,0.03);
+    }
+    .hero-top{
+      display:flex;
+      gap:16px;
+      align-items:center;
+    }
+    .hero-left{
+      flex:1;
+    }
+    .hero h2{
+      margin:0 0 6px 0;
+      font-size:20px;
+    }
+    .hero p.lead{
+      margin:0;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .features{
+      display:flex;
+      gap:12px;
+      margin-top:14px;
+      flex-wrap:wrap;
+    }
+    .feature{
+      background:var(--glass);
+      padding:10px 12px;
+      border-radius:12px;
+      font-size:13px;
+      color:var(--muted);
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+    .feature svg{opacity:0.95}
+
+    /* ===== Promo grid ===== */
+    .promo-grid{
+      display:grid;
+      grid-template-columns: repeat(3,1fr);
+      gap:12px;
+      margin-top:18px;
+    }
+    .promo{
+      background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+      border-radius:12px;
+      padding:10px;
+      text-align:center;
+      font-size:13px;
+      color:var(--muted);
+    }
+    .promo strong{display:block;color:#fff;margin-bottom:6px}
+
+    /* ===== Right column: topup card ===== */
+    .topup{
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      padding:18px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow:var(--shadow);
+    }
+    .topup label{display:block;font-size:13px;color:var(--muted);margin-bottom:8px}
+    .field{
+      display:flex;
+      gap:8px;
+      margin-bottom:12px;
+    }
+    .field input[type="text"], .field select{
+      flex:1;
+      padding:12px 12px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.04);
+      background:transparent;
+      color:inherit;
+      outline:none;
+    }
+    .game-list{
+      display:flex;
+      gap:8px;
+      margin:10px 0 14px 0;
+      flex-wrap:wrap;
+    }
+    .game-btn{
+      padding:8px 10px;
+      border-radius:10px;
+      background:var(--glass-2);
+      border:1px solid rgba(255,255,255,0.02);
+      font-size:13px;
+      cursor:pointer;
+    }
+    .game-btn.active{
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:#081024;
+      font-weight:700;
+    }
+    .amounts{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .amount{
+      padding:10px 12px;
+      border-radius:10px;
+      background:transparent;
+      border:1px dashed rgba(255,255,255,0.04);
+      cursor:pointer;
+      font-weight:600;
+    }
+    .amount.active{
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:#081024;
+    }
+    .pay-methods{
+      display:grid;
+      grid-template-columns: repeat(3,1fr);
+      gap:8px;
+      margin-top:12px;
+    }
+    .pay{
+      background:var(--glass);
+      padding:8px;
+      border-radius:10px;
+      font-size:12px;
+      text-align:center;
+    }
+    .btn-pay{
+      width:100%;
+      padding:12px 14px;
+      margin-top:12px;
+      border-radius:12px;
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      border:none;
+      font-weight:700;
+      cursor:pointer;
+      color:#081024;
+      box-shadow:0 10px 30px rgba(255,160,38,0.12);
+    }
+
+    /* ===== Footer ===== */
+    footer{
+      margin-top:18px;
+      color:var(--muted);
+      font-size:13px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width:980px){
+      .main{grid-template-columns: 1fr; }
+      .topup{order:-1}
+    }
+    @media (max-width:520px){
+      .promo-grid{grid-template-columns: repeat(2,1fr);}
+      .logo h1{font-size:16px}
+      .hero h2{font-size:18px}
+    }
+
+    /* small helper */
+    .muted{color:var(--muted)}
+    .tiny{font-size:12px;color:var(--muted)}
+    .pill{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.02)}
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <header>
+      <div class="logo">
+        <div class="mark">TU</div>
+        <div>
+          <h1>TopUp Store</h1>
+          <div class="tiny">Top-up cepat & mudah</div>
+        </div>
+      </div>
+
+      <nav>
+        <a href="#" class="tiny">Home</a>
+        <a href="#" class="tiny">Game</a>
+        <a href="#" class="tiny">Promo</a>
+        <a href="#" class="cta">Beli Sekarang</a>
+      </nav>
+    </header>
+
+    <main class="main">
+      <!-- LEFT -->
+      <section class="hero">
+        <div class="hero-top">
+          <div class="hero-left">
+            <h2>Top-up cepat & aman untuk semua game</h2>
+            <p class="lead">Pilih game, masukkan ID, pilih nominal, dan bayar — item dikirim otomatis ke akunmu.</p>
+            <div class="features" role="list">
+              <div class="feature" role="listitem">
+                <!-- lightning SVG -->
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
+                  <path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z" fill="currentColor" opacity="0.95"/>
+                </svg>
+                Instant delivery
+              </div>
+              <div class="feature">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
+                  <path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Banyak metode
+              </div>
+              <div class="feature">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
+                  <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.2"/>
+                  <path d="M8 12l2 2 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Terpercaya
+              </div>
+            </div>
+          </div>
+
+          <!-- mini card -->
+          <div style="min-width:220px">
+            <div style="background:linear-gradient(90deg,var(--accent),var(--accent-2)); color:#081024; padding:12px 14px; border-radius:12px; font-weight:700; text-align:center;">
+              Top-up Instan
+            </div>
+            <div class="tiny muted" style="text-align:center; margin-top:8px">Banyak game populer tersedia</div>
+          </div>
+        </div>
+
+        <!-- promo grid -->
+        <div class="promo-grid" aria-hidden>
+          <div class="promo">
+            <strong>Free Fire</strong>
+            🔥 Diamond cepat
+          </div>
+          <div class="promo">
+            <strong>MLBB</strong>
+            ⭐ Top-up + bonus
+          </div>
+          <div class="promo">
+            <strong>Valorant</strong>
+            🎯 RP & Voucher
+          </div>
+          <div class="promo">
+            <strong>Steam Wallet</strong>
+            💳 Aman & resmi
+          </div>
+          <div class="promo">
+            <strong>Mobile Legends</strong>
+            ⚔️ Banyak pilihan
+          </div>
+          <div class="promo">
+            <strong>Vouchers</strong>
+            🎟️ Game/Streaming
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT -->
+      <aside class="topup" aria-labelledby="topupTitle">
+        <h3 id="topupTitle" style="margin-top:0;margin-bottom:8px">Form Top-up</h3>
+        <div class="tiny muted" style="margin-bottom:12px">Isi ID/Username game kamu</div>
+
+        <label for="game">Pilih Game</label>
+        <div class="field">
+          <select id="game" aria-label="Pilih game">
+            <option value="ff">Free Fire</option>
+            <option value="ml">Mobile Legends</option>
+            <option value="valor">Valorant</option>
+            <option value="steam">Steam Wallet</option>
+          </select>
+          <input type="text" id="idgame" placeholder="Masukkan ID / Username" aria-label="ID game"/>
+        </div>
+
+        <div class="game-list" role="list">
+          <button class="game-btn active" type="button" data-game="ff">Free Fire</button>
+          <button class="game-btn" type="button" data-game="ml">MLBB</button>
+          <button class="game-btn" type="button" data-game="valor">Valorant</button>
+          <button class="game-btn" type="button" data-game="steam">Steam</button>
+        </div>
+
+        <label>Pilih Nominal</label>
+        <div class="amounts" role="list">
+          <button class="amount" type="button">20.000</button>
+          <button class="amount active" type="button">50.000</button>
+          <button class="amount" type="button">100.000</button>
+          <button class="amount" type="button">200.000</button>
+        </div>
+
+        <label class="muted" style="margin-top:8px">Pilih Metode Pembayaran</label>
+        <div class="pay-methods">
+          <div class="pay">
+            <div class="tiny">Pulsa</div>
+            <div class="pill tiny">Operator</div>
+          </div>
+          <div class="pay">
+            <div class="tiny">OVO / e-wallet</div>
+            <div class="pill tiny">QR & Transfer</div>
+          </div>
+          <div class="pay">
+            <div class="tiny">Minimarket</div>
+            <div class="pill tiny">Indomaret</div>
+          </div>
+        </div>
+
+        <button class="btn-pay" id="payBtn" aria-live="polite">Bayar Sekarang</button>
+
+        <div style="margin-top:12px" class="tiny muted">Simpan bukti transaksi bila perlu untuk klaim.</div>
+      </aside>
+
+    </main>
+
+    <footer>
+      <div class="tiny muted">© TopUp Store — Demo • Tidak resmi</div>
+      <div class="tiny muted">Butuh bantuan? chat kami</div>
+    </footer>
+
+  </div>
+
+  <script>
+    // Small interactive behaviors (vanilla JS) - feel free to expand
+    document.querySelectorAll('.game-btn').forEach(btn=>{
+      btn.addEventListener('click', e=>{
+        document.querySelectorAll('.game-btn').forEach(x=>x.classList.remove('active'));
+        e.currentTarget.classList.add('active');
+        // sync select
+        const val = e.currentTarget.dataset.game;
+        const sel = document.getElementById('game');
+        sel.value = (val === 'ml' ? 'ml' : val);
+      });
+    });
+
+    document.querySelectorAll('.amount').forEach(a=>{
+      a.addEventListener('click', e=>{
+        document.querySelectorAll('.amount').forEach(x=>x.classList.remove('active'));
+        e.currentTarget.classList.add('active');
+      });
+    });
+
+    document.getElementById('payBtn').addEventListener('click', ()=>{
+      const game = document.getElementById('game').value;
+      const id = document.getElementById('idgame').value.trim();
+      const amount = document.querySelector('.amount.active')?.textContent || '';
+      if(!id){
+        alert('Masukkan ID / Username game terlebih dahulu.');
+        return;
+      }
+      // Simulasi — di implementasi real, kirim ke server
+      alert('Permintaan top-up dibuat:\\nGame: ' + game + '\\nID: ' + id + '\\nNominal: ' + amount + '\\n\\n(Tanpa server ini hanya demo)');
+    });
+  </script>
+</body>
+</html>
